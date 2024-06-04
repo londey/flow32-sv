@@ -1,0 +1,19 @@
+{
+    "name": "SystemVerilog iCE40 FPGA Development",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "settings": { 
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+        "eirikpre.systemverilog",
+        "twitchbronbron.vscode-litex",
+        "GitHub.copilot-chat",
+        "GitHub.copilot",
+        "mshr-h.veriloghdl"
+    ],
+    "forwardPorts": [],
+    "postCreateCommand": "echo 'Ready to code SystemVerilog for iCE40!'"
+}
