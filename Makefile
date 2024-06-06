@@ -18,7 +18,7 @@ synth: $(SRCS)
 	@yosys -p 'synth_ice40 -top $(TOP) -json build/design.json' $(SRCS)
 
 place: build/design.json
-	nextpnr-ice40 --hx1k --json build/design.json --pcf src/pinmap.pcf --asc build/design.asc --package vq100
+	nextpnr-ice40 --package sg48 --up5k --freq 48 --top Top --json build/design.json --pcf src/pinmap.pcf --asc build/design.asc
 # @arachne-pnr -d 1k -P tq144:4k -p build/pinmap.pcf build/design.blif -o build/design.txt
 
 pack: build/design.asc

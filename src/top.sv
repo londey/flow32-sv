@@ -25,25 +25,9 @@ module Top
    parameter TOTAL_ROWS = 525,
    parameter ACTIVE_COLS = 640,
    parameter ACTIVE_ROWS = 480)
-  (input wire i_clk,
-   input wire i_reset,
-   output reg o_hsync = 0,
-   output reg o_vsync = 0,
-   output reg [SUB_PIXEL_WIDTH-1:0] o_red_video,
-   output reg [SUB_PIXEL_WIDTH-1:0] o_grn_video,
-   output reg [SUB_PIXEL_WIDTH-1:0] o_blu_video);
+  (input wire clock
+);
   
-  VgaClock vga_clock (
-    .i_clk(i_clk),
-    .i_reset(i_reset),
-    .o_hsync(o_hsync),
-    .o_vsync(o_vsync)
-  );
-
-  assign o_red_video = 3'b111;
-  assign o_grn_video = 3'b000;
-  assign o_blu_video = 3'b000;
-
   // wire w_VSync;
   // wire w_HSync;
   
