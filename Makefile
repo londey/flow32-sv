@@ -1,6 +1,6 @@
 
 SRCS := $(wildcard src/*.sv)
-TESTS := $(wildcard test/*.sv)
+TEST_BENCHES := $(wildcard test/testbench/*.sv)
 
 TOP = Top
 
@@ -9,6 +9,7 @@ all:
 	@make place
 	@make pack
 	@make uf2
+	@make verilator
 
 srcs:
 	@echo $(SRCS)
@@ -27,6 +28,12 @@ pack: build/design.asc
 
 uf2: build/design.bin
 	@bin2uf2 -o build/design.uf2 build/design.bin
+
+verilator: $(SRCS)
+	@mkdir -p build/verilator/obj
+	@verilator --sc -Wall --Mdir build/verilator/obj --cc $(SRCS) --exe test/verilator/verilator_main.cpp
+	@make -C build/verilator -j -f build/verilator/obj/VTop.mk VTop
+	@./build/verilator/VTop
 
 clean:
 	@rm -f build/*
