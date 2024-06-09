@@ -6,10 +6,10 @@
 module Top 
  #(//parameter SUB_PIXEL_WIDTH = 3,
 )(
-    input wire clock
+    input wire clock,
     input wire i_reset
-    input UART_RX,
-    output UART_TX
+    // input UART_RX,
+    // output UART_TX
 );
     // assign UART_TX = UART_RX;
   // wire w_VSync;

@@ -8,6 +8,7 @@ all:
 	@make synth
 	@make place
 	@make pack
+	@make uf2
 
 srcs:
 	@echo $(SRCS)
@@ -23,6 +24,9 @@ place: build/design.json
 
 pack: build/design.asc
 	@icepack build/design.asc build/design.bin
+
+uf2: build/design.bin
+	@bin2uf2 -o build/design.uf2 build/design.bin
 
 clean:
 	@rm -f build/*
