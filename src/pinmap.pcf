@@ -4,7 +4,7 @@
 set_io clock 35
 set_frequency clock 48
 
-# set_io i_reset 8
+set_io i_reset 10
 
 # Signals definition (as in the circuit diagram)
 set_io -nowarn ICE_2            2

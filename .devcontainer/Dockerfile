@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     qtcreator qtbase5-dev qt5-qmake \
     tcl-dev \
+    verilator \
     xdot \
     zlib1g-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

@@ -1,33 +1,17 @@
-// This module is designed for 640x480 with a 25 MHz input clock.
-// All test patterns are being generated all the time.  This makes use of one
-// of the benefits of FPGAs, they are highly parallelizable.  Many different
-// things can all be happening at the same time.  In this case, there are several
-// test patterns that are being generated simulatenously.  The actual choice of
-// which test pattern gets displayed is done via the i_Pattern signal, which is
-// an input to a case statement.
-
-// Available Patterns:
-// Pattern 0: Disables the Test Pattern Generator
-// Pattern 1: All Red
-// Pattern 2: All Green
-// Pattern 3: All Blue
-// Pattern 4: Checkerboard white/black
-// Pattern 5: Color Bars
-// Pattern 6: White Box with Border (2 pixels)
 
 // Note: Comment out this line when building in iCEcube2:
 //`include "Sync_To_Count.v"
 
 
 module Top 
- #(parameter SUB_PIXEL_WIDTH = 3,
-   parameter TOTAL_COLS = 800,
-   parameter TOTAL_ROWS = 525,
-   parameter ACTIVE_COLS = 640,
-   parameter ACTIVE_ROWS = 480)
-  (input wire clock
+ #(//parameter SUB_PIXEL_WIDTH = 3,
+)(
+    input wire clock
+    input wire i_reset
+    input UART_RX,
+    output UART_TX
 );
-  
+    // assign UART_TX = UART_RX;
   // wire w_VSync;
   // wire w_HSync;
   
