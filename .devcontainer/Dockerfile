@@ -45,13 +45,13 @@ RUN git clone https://github.com/cliffordwolf/icestorm.git /icestorm && \
     make -j$(nproc) && \
     make install
 
-RUN git clone https://github.com/YosysHQ/yosys.git /yosys && \
+RUN git clone --branch yosys-0.42 --recurse-submodules https://github.com/YosysHQ/yosys.git /yosys && \
     cd /yosys && \
     make -j$(nproc) && \
     make install
 
 
-RUN git clone https://github.com/YosysHQ/nextpnr.git /nextpnr && \
+RUN git clone --recurse-submodules https://github.com/YosysHQ/nextpnr.git /nextpnr && \
     cd /nextpnr && \
     cmake -DARCH=ice40 -DBUILD_GUI=ON . && \
     make -j$(nproc) && \
