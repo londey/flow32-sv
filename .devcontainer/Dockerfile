@@ -51,7 +51,7 @@ RUN git clone --branch yosys-0.42 --recurse-submodules https://github.com/YosysH
     make install
 
 
-RUN git clone --recurse-submodules https://github.com/YosysHQ/nextpnr.git /nextpnr && \
+RUN git clone --branch nextpnr-0.7 --recurse-submodules https://github.com/YosysHQ/nextpnr.git /nextpnr && \
     cd /nextpnr && \
     cmake -DARCH=ice40 -DBUILD_GUI=ON . && \
     make -j$(nproc) && \

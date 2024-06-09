@@ -9,6 +9,8 @@
 // Likely tools will infer Block RAM if WIDTH/DEPTH is large enough.
 // If small, tools will infer register-based memory.
 
+/*
+
 module Ram1Port #(parameter WIDTH = 16, parameter DEPTH = 256) (
   input                     i_clk,
   // Shared address for writes and reads
@@ -38,3 +40,5 @@ module Ram1Port #(parameter WIDTH = 16, parameter DEPTH = 256) (
   end
 
 endmodule
+
+*/

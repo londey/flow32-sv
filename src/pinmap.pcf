@@ -1,10 +1,11 @@
 # Reference for PMOD names:
 # https://digilent.com/reference/pmod/start
 
-set_io clock 35
-set_frequency clock 48
+set_io CLK 35
+set_frequency CLK 48
 
-set_io i_reset 10
+# set_io -nowarn UART_TX          25
+# set_io -nowarn UART_RX          27
 
 # Signals definition (as in the circuit diagram)
 set_io -nowarn ICE_2            2
