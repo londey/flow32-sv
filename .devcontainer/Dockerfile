@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
@@ -59,6 +59,10 @@ RUN git clone --recurse-submodules https://github.com/YosysHQ/nextpnr.git /nextp
 
 # Install Verilog simulator (Icarus Verilog)
 RUN apt-get install -y iverilog
+
+RUN git clone https://github.com/tinyvision-ai-inc/uf2-utils.git && \
+    cd uf2-utils && \
+    make install
 
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
