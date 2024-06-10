@@ -9,7 +9,8 @@ all:
 	@make place
 	@make pack
 	@make uf2
-	@make verilator
+	
+#   @make verilator
 
 srcs:
 	@echo $(SRCS)
@@ -17,7 +18,7 @@ srcs:
 synth: $(SRCS)
 	@echo $(SRCS)
 	@mkdir -p build
-	@yosys -p 'synth_ice40 -top $(TOP) -json build/design.json' $(SRCS)
+	@yosys -p 'synth_ice40 -abc9 -top $(TOP) -json build/design.json' $(SRCS)
 
 place: build/design.json
 	nextpnr-ice40 --package sg48 --up5k --freq 48 --top Top --json build/design.json --pcf src/pinmap.pcf --asc build/design.asc

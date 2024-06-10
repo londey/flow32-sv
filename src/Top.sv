@@ -7,10 +7,32 @@ module Top
  #(//parameter SUB_PIXEL_WIDTH = 3,
 )(
     input wire clock,
-    input wire i_reset
+    // input wire i_reset,
+    // input UART_RX,
+    // output UART_TX
+    output wire LED_R,
+    output wire LED_G,
+    output wire LED_B,
+
     // input UART_RX,
     // output UART_TX
 );
+
+    localparam N = 24;
+
+    reg [N-1:0] counter;
+
+    always @(posedge clk) begin
+        counter <= counter + 1;
+    end
+
+    assign LED_G = counter[N - 1];
+    assign LED_B = counter[N - 2];
+    assign LED_R = counter[N - 3];
+
+    // assign UART_TX = UART_RX;
+
+
     // assign UART_TX = UART_RX;
   // wire w_VSync;
   // wire w_HSync;
