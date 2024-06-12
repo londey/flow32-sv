@@ -21,13 +21,16 @@ synth: $(SRCS)
 	@yosys -p 'synth_ice40 -abc9 -top $(TOP) -json build/design.json' $(SRCS)
 
 place: build/design.json
-	nextpnr-ice40 --package sg48 --up5k --freq 48 --top Top --json build/design.json --pcf src/pinmap.pcf --asc build/design.asc
+	@rm build/design.asc
+	@nextpnr-ice40 --Werror --package sg48 --up5k --freq 48 --top Top --json build/design.json --pcf src/pinmap.pcf --asc build/design.asc
 # @arachne-pnr -d 1k -P tq144:4k -p build/pinmap.pcf build/design.blif -o build/design.txt
 
 pack: build/design.asc
+	@rm build/design.bin
 	@icepack build/design.asc build/design.bin
 
 uf2: build/design.bin
+	@rm build/design.uf2
 	@bin2uf2 -o build/design.uf2 build/design.bin
 
 verilator: $(SRCS)

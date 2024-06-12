@@ -7,12 +7,12 @@ module Top
  #(//parameter SUB_PIXEL_WIDTH = 3,
 )(
     input wire clock,
-    // input wire i_reset,
+    input wire i_reset_n,
     // input UART_RX,
     // output UART_TX
-    output wire LED_R,
-    output wire LED_G,
-    output wire LED_B,
+    output reg LED_R,
+    output reg LED_G,
+    output reg LED_B
 
     // input UART_RX,
     // output UART_TX
@@ -21,14 +21,34 @@ module Top
     localparam N = 24;
 
     reg [N-1:0] counter;
+    reg [1:0] led;
 
-    always @(posedge clk) begin
+    
+
+    always_ff @(posedge clock) begin
+        if (!i_reset_n) begin
+            led <= 0;
+            counter <= 1;
+        end else if (counter == 0) begin
+            led <= led + 1;
+            counter <= counter + 1;
+        end else begin
+            counter <= counter + 1;
+        end
+        // if (i_reset_n) begin
+        //     counter <= 0;
+        // end else if (counter == (N ** 2) - 1) begin
+        //     counter <= 0;
+        // end else begin
+        //     counter <= counter + 1;
+        // end
+
         counter <= counter + 1;
     end
 
-    assign LED_G = counter[N - 1];
-    assign LED_B = counter[N - 2];
-    assign LED_R = counter[N - 3];
+    assign LED_R = !(led == 2'b00);
+    assign LED_G = !(led == 2'b01);
+    assign LED_B = !(led == 2'b10);
 
     // assign UART_TX = UART_RX;
 
