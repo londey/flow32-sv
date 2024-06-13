@@ -41,8 +41,9 @@ uf2: build/design.bin
 
 verilator: $(SRCS)
 	@echo $(SRCS)
+	@rm -rf build/verilator
 	@mkdir -p build/verilator/obj
-	@verilator --sc -Wall --Mdir build/verilator/obj --cc $(SRCS) --exe test/verilator/verilator_main.cpp
+	verilator --sc --exe --top-module Top --Mdir build/verilator/obj -Wall test/verilator/verilator_main.cpp $(SRCS)  
 	@make -C build/verilator -j -f build/verilator/obj/VTop.mk VTop
 	@./build/verilator/VTop
 

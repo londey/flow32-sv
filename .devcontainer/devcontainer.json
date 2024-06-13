@@ -8,11 +8,22 @@
         "terminal.integrated.shell.linux": "/bin/bash"
     },
     "extensions": [
+        "amykyta3.systemrdl",
+        "Asuka.insertnumbers",
         "eirikpre.systemverilog",
-        "twitchbronbron.vscode-litex",
         "GitHub.copilot-chat",
         "GitHub.copilot",
-        "mshr-h.veriloghdl"
+        "hediet.vscode-drawio",
+        "mechatroner.rainbow-csv",
+        "ms-vscode-remote.remote-containers",
+        "ms-vscode.cpptools-extension-pack",
+        "ms-vscode.cpptools-themes",
+        "ms-vscode.cpptools",
+        "ms-vscode.makefile-tools",
+        "mshr-h.veriloghdl",
+        "streetsidesoftware.code-spell-checker",
+        "twitchbronbron.vscode-litex",
+        "yzhang.markdown-all-in-one"
     ],
     "forwardPorts": [],
     "postCreateCommand": "echo 'Ready to code SystemVerilog for iCE40!'"
