@@ -11,8 +11,8 @@ all:
 	@make place
 	@make pack
 	@make uf2
-	
-#   @make verilator
+
+# @make verilator
 
 srcs:
 	@echo $(SRCS)
@@ -40,6 +40,7 @@ uf2: build/design.bin
 
 
 verilator: $(SRCS)
+	@echo $(SRCS)
 	@mkdir -p build/verilator/obj
 	@verilator --sc -Wall --Mdir build/verilator/obj --cc $(SRCS) --exe test/verilator/verilator_main.cpp
 	@make -C build/verilator -j -f build/verilator/obj/VTop.mk VTop

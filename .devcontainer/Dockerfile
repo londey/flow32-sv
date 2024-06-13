@@ -64,6 +64,25 @@ RUN git clone https://github.com/tinyvision-ai-inc/uf2-utils.git && \
     cd uf2-utils && \
     make install
 
+RUN apt update && apt install -y \
+    libsystemc-dev \
+    libsystemc-doc \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install locales package
+RUN apt-get update && apt-get install -y \
+    locales \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Uncomment the desired locale in /etc/locale.gen and generate it
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen
+
+# Set environment variables
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8  
+
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
