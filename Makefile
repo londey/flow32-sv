@@ -44,8 +44,10 @@ verilator: $(SRCS)
 	@rm -rf build/verilator
 	@mkdir -p build/verilator/obj
 	verilator --sc --exe --top-module Top --Mdir build/verilator/obj -Wall test/verilator/verilator_main.cpp $(SRCS)  
-	@make -C build/verilator -j -f build/verilator/obj/VTop.mk VTop
-	@./build/verilator/VTop
+	@make -j -C build/verilator/obj -j -f VTop.mk VTop
+	./build/verilator/VTop
+
+# make -j -C obj_dir -f Vour.mk Vour
 
 
 clean:
