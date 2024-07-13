@@ -21,7 +21,7 @@ srcs:
 synth: $(SRCS)
 	@echo $(SRCS)
 	@mkdir -p build
-	@yosys -p 'synth_ice40 -abc9 -top $(TOP) -json build/design.json' $(SRCS)
+	@yosys -Q -p 'synth_ice40 -abc9 -top $(TOP) -json build/design.json' $(SRCS)
 
 
 place: build/design.json
