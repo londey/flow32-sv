@@ -67,5 +67,5 @@ RUN git clone https://github.com/tinyvision-ai-inc/uf2-utils.git && \
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Set working directory
+# Set the working directory
 WORKDIR /workspace

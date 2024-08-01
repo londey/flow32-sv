@@ -12,7 +12,8 @@
         "twitchbronbron.vscode-litex",
         "GitHub.copilot-chat",
         "GitHub.copilot",
-        "mshr-h.veriloghdl"
+        "mshr-h.veriloghdl",
+        "ms-vscode.makefile-tools"
     ],
     "forwardPorts": [],
     "postCreateCommand": "echo 'Ready to code SystemVerilog for iCE40!'"
