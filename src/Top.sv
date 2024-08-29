@@ -7,109 +7,147 @@ module Top
 )(
     input CLK,
     input ICE_PB,
-    input UART_RX,
-    output LED_R,
-    output UART_TX
+
+    output ICE_28,
+    output ICE_31,
+    output ICE_32,
+    output ICE_34,
+    output ICE_36,
+    output ICE_38,
+    output ICE_42,
+    output ICE_43,
+
+    // input UART_RX,
+    // output LED_R,
+    // output UART_TX
 );
-    localparam CYCLES_PER_UART_CLOCK = CLK_FREQ / UART_CLK_FREQ;
-    localparam SLEEP_CYCLES = CLK_FREQ;
+reg [7:0] my_register;
 
-    typedef enum {
-        UART_STATE_IDLE = 2'h0,
-        UART_STATE_START_BIT = 2'h1,
-        UART_STATE_DATA_BITS = 2'h2,
-        UART_STATE_STOP_BIT = 2'h3
-    } uart_state_e;
+reg [31:0] counter;
 
-    uart_state_e uart_tx_state;
 
-    /// Counter for the number of cycles since the last UART clock
-    reg [$clog2(CYCLES_PER_UART_CLOCK):0] uart_tx_clock_counter;
+always_comb begin
+    ICE_28 = !my_register[0];
+    ICE_31 = !my_register[1];
+    ICE_32 = !my_register[2];
+    ICE_34 = !my_register[3];
+    ICE_36 = !my_register[4];
+    ICE_38 = !my_register[5];
+    ICE_42 = !my_register[6];
+    ICE_43 = !my_register[7];
+end
 
-    /// 8-bit data to be transmitted
-    reg [7:0] uart_tx_data;
-
-    /// 3-bit counter for the current data bit being transmitted
-    reg [2:0] uart_tx_data_bit_index;
-
-    /// A counter for the number of CLK cycles till the next UART transmission starts
-    reg [24:0] uart_sleep_interval_counter;
-
-    // assign LED_R = UART_TX;
-
-    always_ff @(posedge CLK) begin
-        if (ICE_PB == 0) begin
-            uart_tx_data <= 8'b0110_0001; // "a"
-            uart_tx_clock_counter <= 0;
-            uart_sleep_interval_counter <= 0;
-            uart_tx_state <= uart_state_e::IDLE;
-        end else begin
-
-            case (uart_tx_state)
-            
-                UART_STATE_IDLE: begin
-                    UART_TX <= !1'b0;
-                    uart_tx_clock_counter <= 0;
-                    uart_tx_data_bit_index <= 0;
-
-                    if (uart_sleep_interval_counter == SLEEP_CYCLES) begin
-                        uart_sleep_interval_counter <= 0;
-                        uart_tx_state <= uart_state_e::UART_START_BIT;
-                    end else begin
-                        uart_sleep_interval_counter <= uart_sleep_interval_counter + 1;
-                        uart_tx_state <= uart_state_e::IDLE;
-                    end
-                end
-
-                UART_STATE_START_BIT: begin
-                    UART_TX <= !1'b0;
-                    uart_sleep_interval_counter <= 0;
-                    uart_tx_data_bit_index <= 0;
-
-                    if (uart_tx_clock_counter == CYCLES_PER_UART_CLOCK) begin
-                        uart_tx_clock_counter <= 0;
-                        uart_tx_state <= uart_state_e::DATA_BITS;
-                    end else begin
-                        uart_tx_clock_counter <= uart_tx_clock_counter + 1;
-                        uart_tx_state <= uart_state_e::UART_START_BIT;
-                    end
-                end
-
-                UART_STATE_DATA_BITS: begin
-                    uart_sleep_interval_counter <= 0;
-                    UART_TX <= !uart_tx_data[uart_tx_data_bit_index];
-
-                    if (uart_tx_clock_counter == CYCLES_PER_UART_CLOCK) begin
-                        uart_tx_clock_counter <= 0;
-                        if (uart_tx_data_bit_index == 7) begin
-                            uart_tx_data_bit_index <= 0;
-                            uart_tx_state <= uart_state_e::UART_STOP_BIT;
-                        end else begin
-                            uart_tx_data_bit_index <= uart_tx_data_bit_index + 1;
-                            uart_tx_state <= uart_state_e::DATA_BITS;
-                        end
-                    end else begin
-                        uart_tx_clock_counter <= uart_tx_clock_counter + 1;
-                    end
-                end
-
-                UART_STATE_STOP_BIT: begin
-                    UART_TX <= !1'b0;
-                    uart_sleep_interval_counter <= 0;
-                    uart_tx_data_bit_index <= 0;
-
-                    if (uart_tx_clock_counter == CYCLES_PER_UART_CLOCK) begin
-                        uart_tx_clock_counter <= 0;
-                        uart_tx_state <= uart_state_e::IDLE;
-                    end else begin
-                        uart_tx_clock_counter <= uart_tx_clock_counter + 1;
-                        uart_tx_state <= uart_state_e::UART_STOP_BIT;
-                    end
-                end
-
-            endcase
-        end
+always_ff @(posedge CLK) begin
+    if (counter == CLK_FREQ) begin
+        counter <= 0;
+        my_register <= my_register + 1;
+    end else begin
+        counter <= counter + 1;
+        my_register <= my_register;
     end
+
+end
+
+
+    // localparam CYCLES_PER_UART_CLOCK = CLK_FREQ / UART_CLK_FREQ;
+    // localparam SLEEP_CYCLES = CLK_FREQ;
+
+    // typedef enum {
+    //     UART_STATE_IDLE = 2'h0,
+    //     UART_STATE_START_BIT = 2'h1,
+    //     UART_STATE_DATA_BITS = 2'h2,
+    //     UART_STATE_STOP_BIT = 2'h3
+    // } uart_state_e;
+
+    // uart_state_e uart_tx_state;
+
+    // /// Counter for the number of cycles since the last UART clock
+    // reg [$clog2(CYCLES_PER_UART_CLOCK):0] uart_tx_clock_counter;
+
+    // /// 8-bit data to be transmitted
+    // reg [7:0] uart_tx_data;
+
+    // /// 3-bit counter for the current data bit being transmitted
+    // reg [2:0] uart_tx_data_bit_index;
+
+    // /// A counter for the number of CLK cycles till the next UART transmission starts
+    // reg [24:0] uart_sleep_interval_counter;
+
+    // // assign LED_R = UART_TX;
+
+    // always_ff @(posedge CLK) begin
+    //     if (ICE_PB == 0) begin
+    //         uart_tx_data <= 8'b0110_0001; // "a"
+    //         uart_tx_clock_counter <= 0;
+    //         uart_sleep_interval_counter <= 0;
+    //         uart_tx_state <= uart_state_e::IDLE;
+    //     end else begin
+
+    //         case (uart_tx_state)
+            
+    //             UART_STATE_IDLE: begin
+    //                 UART_TX <= !1'b0;
+    //                 uart_tx_clock_counter <= 0;
+    //                 uart_tx_data_bit_index <= 0;
+
+    //                 if (uart_sleep_interval_counter == SLEEP_CYCLES) begin
+    //                     uart_sleep_interval_counter <= 0;
+    //                     uart_tx_state <= uart_state_e::UART_START_BIT;
+    //                 end else begin
+    //                     uart_sleep_interval_counter <= uart_sleep_interval_counter + 1;
+    //                     uart_tx_state <= uart_state_e::IDLE;
+    //                 end
+    //             end
+
+    //             UART_STATE_START_BIT: begin
+    //                 UART_TX <= !1'b0;
+    //                 uart_sleep_interval_counter <= 0;
+    //                 uart_tx_data_bit_index <= 0;
+
+    //                 if (uart_tx_clock_counter == CYCLES_PER_UART_CLOCK) begin
+    //                     uart_tx_clock_counter <= 0;
+    //                     uart_tx_state <= uart_state_e::DATA_BITS;
+    //                 end else begin
+    //                     uart_tx_clock_counter <= uart_tx_clock_counter + 1;
+    //                     uart_tx_state <= uart_state_e::UART_START_BIT;
+    //                 end
+    //             end
+
+    //             UART_STATE_DATA_BITS: begin
+    //                 uart_sleep_interval_counter <= 0;
+    //                 UART_TX <= !uart_tx_data[uart_tx_data_bit_index];
+
+    //                 if (uart_tx_clock_counter == CYCLES_PER_UART_CLOCK) begin
+    //                     uart_tx_clock_counter <= 0;
+    //                     if (uart_tx_data_bit_index == 7) begin
+    //                         uart_tx_data_bit_index <= 0;
+    //                         uart_tx_state <= uart_state_e::UART_STOP_BIT;
+    //                     end else begin
+    //                         uart_tx_data_bit_index <= uart_tx_data_bit_index + 1;
+    //                         uart_tx_state <= uart_state_e::DATA_BITS;
+    //                     end
+    //                 end else begin
+    //                     uart_tx_clock_counter <= uart_tx_clock_counter + 1;
+    //                 end
+    //             end
+
+    //             UART_STATE_STOP_BIT: begin
+    //                 UART_TX <= !1'b0;
+    //                 uart_sleep_interval_counter <= 0;
+    //                 uart_tx_data_bit_index <= 0;
+
+    //                 if (uart_tx_clock_counter == CYCLES_PER_UART_CLOCK) begin
+    //                     uart_tx_clock_counter <= 0;
+    //                     uart_tx_state <= uart_state_e::IDLE;
+    //                 end else begin
+    //                     uart_tx_clock_counter <= uart_tx_clock_counter + 1;
+    //                     uart_tx_state <= uart_state_e::UART_STOP_BIT;
+    //                 end
+    //             end
+
+    //         endcase
+    //     end
+    // end
 
 
 endmodule
