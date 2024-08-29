@@ -2,7 +2,7 @@
 
 module Top 
  #(
-    CLK_FREQ = 48_000_000,
+    CLK_FREQ = 12_000_000,
     UART_CLK_FREQ = 115_200, 
 )(
     input CLK,
@@ -15,10 +15,10 @@ module Top
     localparam SLEEP_CYCLES = CLK_FREQ;
 
     typedef enum {
-        IDLE = 0,
-        UART_START_BIT,
-        DATA_BITS,
-        UART_STOP_BIT
+        UART_STATE_IDLE = 2'h0,
+        UART_STATE_START_BIT = 2'h1,
+        UART_STATE_DATA_BITS = 2'h2,
+        UART_STATE_STOP_BIT = 2'h3
     } uart_state_e;
 
     uart_state_e uart_tx_state;
@@ -47,7 +47,7 @@ module Top
 
             case (uart_tx_state)
             
-                uart_state_e::IDLE: begin
+                UART_STATE_IDLE: begin
                     UART_TX <= !1'b0;
                     uart_tx_clock_counter <= 0;
                     uart_tx_data_bit_index <= 0;
@@ -61,7 +61,7 @@ module Top
                     end
                 end
 
-                uart_state_e::UART_START_BIT: begin
+                UART_STATE_START_BIT: begin
                     UART_TX <= !1'b0;
                     uart_sleep_interval_counter <= 0;
                     uart_tx_data_bit_index <= 0;
@@ -75,7 +75,7 @@ module Top
                     end
                 end
 
-                uart_state_e::DATA_BITS: begin
+                UART_STATE_DATA_BITS: begin
                     uart_sleep_interval_counter <= 0;
                     UART_TX <= !uart_tx_data[uart_tx_data_bit_index];
 
@@ -93,7 +93,7 @@ module Top
                     end
                 end
 
-                uart_state_e::UART_STOP_BIT: begin
+                UART_STATE_STOP_BIT: begin
                     UART_TX <= !1'b0;
                     uart_sleep_interval_counter <= 0;
                     uart_tx_data_bit_index <= 0;
