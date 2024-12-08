@@ -5,7 +5,7 @@
 module Top 
  #(
     CLK_FREQ = 48_000_000,
-    UART_CLK_FREQ = 115_200, 
+    UART_CLK_FREQ = 115_200
 )(
     input CLK,
     input ICE_PB,
